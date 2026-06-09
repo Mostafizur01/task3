@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 function gcd(x, y) {
-    while (y !== 0) {
+    while (y !== 0n) {
         let temp = y;
         y = x % y;
         x = temp;
@@ -12,7 +12,7 @@ function gcd(x, y) {
 }
 
 function lcm(x, y) {
-    if (x === 0 || y === 0) return 0;
+    if (x === 0n || y === 0n) return 0n;
     return (x * y) / gcd(x, y);
 }
 
@@ -32,10 +32,10 @@ app.get('/mdmostafizurrahman704_gmail_com', (req, res) => {
         return res.send('NaN');
     }
 
-    let numX = Number(cleanX);
-    let numY = Number(cleanY);
+    let numX = BigInt(cleanX);
+    let numY = BigInt(cleanY);
 
-    if (numX < 1 || numY < 1) {
+    if (numX < 1n || numY < 1n) {
         return res.send('NaN');
     }
 
