@@ -2,11 +2,12 @@ const express = require('express')
 const app = express()
 
 let gcd = (x, y) => {
-    if ( y === 0 ) {
-        return x
-    } else {
-        return gcd(y, x % y)
+    while (y !== 0) {
+        let temp = y;
+        y = x % y;
+        x = temp;
     }
+    return x;
 }
 let lcm = (x, y) => {
     let maltiply = x * y
