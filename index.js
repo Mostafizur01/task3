@@ -24,7 +24,6 @@ app.get('/mdmostafizurrahman704_gmail_com', (req, res) => {
         return res.send('NaN');
     }
 
-    // 👉 এখানে পরিবর্তন! ব্র্যাকেটের পাশাপাশি ব্রাউজারের %7B এবং %7D কোডও মুছে ফেলবে
     let cleanX = x.replace(/[{} ]|%7B|%7D/gi, '');
     let cleanY = y.replace(/[{} ]|%7B|%7D/gi, '');
 
