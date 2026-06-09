@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-function getGcd(x, y) {
+function gcd(x, y) {
     while (y !== 0) {
         let temp = y;
         y = x % y;
@@ -11,9 +11,9 @@ function getGcd(x, y) {
     return x;
 }
 
-function getLcm(x, y) {
+function lcm(x, y) {
     if (x === 0 || y === 0) return 0;
-    return (x * y) / getGcd(x, y);
+    return (x * y) / gcd(x, y);
 }
 
 app.get('/mdmostafizurrahman704_gmail_com', (req, res) => {
@@ -25,35 +25,22 @@ app.get('/mdmostafizurrahman704_gmail_com', (req, res) => {
         return res.send('NaN');
     }
 
-    let strX = String(x).trim();
-    let strY = String(y).trim();
+    let cleanX = String(x).replace(/[{} ]|%7B|%7D/gi, '');
+    let cleanY = String(y).replace(/[{} ]|%7B|%7D/gi, '');
 
-    if (!/^\d+$/.test(strX) || !/^\d+$/.test(strY)) {
+    if (!/^\d+$/.test(cleanX) || !/^\d+$/.test(cleanY)) {
         return res.send('NaN');
     }
 
-    let numX = Number(strX);
-    let numY = Number(strY);
+    let numX = Number(cleanX);
+    let numY = Number(cleanY);
 
     if (numX < 1 || numY < 1) {
         return res.send('NaN');
     }
 
-    if (numX > Number.MAX_SAFE_INTEGER || numY > Number.MAX_SAFE_INTEGER) {
-        return res.send('NaN');
-    }
-
-    let result = getLcm(numX, numY);
-
-    if (isNaN(result) || !isFinite(result)) {
-        return res.send('NaN');
-    }
-
+    let result = lcm(numX, numY);
     res.send(String(result));
-});
-
-app.use((err, req, res, next) => {
-    res.send('NaN');
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
