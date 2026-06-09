@@ -1,7 +1,8 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-let gcd = (x, y) => {
+function getGcd(x, y) {
     while (y !== 0) {
         let temp = y;
         y = x % y;
@@ -10,36 +11,49 @@ let gcd = (x, y) => {
     return x;
 }
 
-let lcm = (x, y) => {
-    let maltiply = x * y
-    let gcdValue = gcd(x, y)
-    let lcmValue = maltiply / gcdValue
-    return lcmValue
+function getLcm(x, y) {
+    if (x === 0 || y === 0) return 0;
+    return (x * y) / getGcd(x, y);
 }
 
 app.get('/mdmostafizurrahman704_gmail_com', (req, res) => {
-    let { x, y } = req.query
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 
-    if (!x || !y || typeof x !== 'string' || typeof y !== 'string') {
+    let { x, y } = req.query;
+
+    if (!x || !y) {
         return res.send('NaN');
     }
 
-    let cleanX = x.replace(/[{} ]|%7B|%7D/gi, '');
-    let cleanY = y.replace(/[{} ]|%7B|%7D/gi, '');
+    let strX = String(x).trim();
+    let strY = String(y).trim();
 
-    if (!/^\d+$/.test(cleanX) || !/^\d+$/.test(cleanY)) {
+    if (!/^\d+$/.test(strX) || !/^\d+$/.test(strY)) {
         return res.send('NaN');
     }
 
-    let numX = Number(cleanX);
-    let numY = Number(cleanY);
+    let numX = Number(strX);
+    let numY = Number(strY);
 
     if (numX < 1 || numY < 1) {
         return res.send('NaN');
     }
 
-    let result = lcm(numX, numY);
-    res.send(result.toString());
-})
+    if (numX > Number.MAX_SAFE_INTEGER || numY > Number.MAX_SAFE_INTEGER) {
+        return res.send('NaN');
+    }
 
-app.listen(3000, () => console.log('Server run at http://localhost:3000/mdmostafizurrahman704_gmail_com'))
+    let result = getLcm(numX, numY);
+
+    if (isNaN(result) || !isFinite(result)) {
+        return res.send('NaN');
+    }
+
+    res.send(String(result));
+});
+
+app.use((err, req, res, next) => {
+    res.send('NaN');
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
